@@ -1,15 +1,19 @@
 class Airport
 
-	# DEFAULT_CAPACITY = 10
+	DEFAULT_CAPACITY = 10
 
 	def initialize
 		@planes = []
-		@capacity = 5
 
+	end
+
+	def capacity
+		@capacity = DEFAULT_CAPACITY
 	end
 
 	def plane_land(plane)
 		raise "Airport full" if full?
+		return "Cannot land due to severe weather conditions" if weather == :stormy
 		@planes << plane
 	end
 
@@ -18,6 +22,7 @@ class Airport
 	end
 
 	def plane_fly
+		return "Weather conditions do not permit take off" if weather == :stormy
 		@planes.pop
 	end
 

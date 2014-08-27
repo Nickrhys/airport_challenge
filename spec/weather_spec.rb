@@ -5,10 +5,4 @@
     # This will require stubbing to stop the random return of the weather.
     # If the airport has a weather condition of stormy,
     # the plane can not land, and must not be in the airport
-    xcontext 'weather conditions' do
-      xit 'a plane cannot take off when there is a storm brewing' do
-      end
-      
-      xit 'a plane cannot land in the middle of a storm' do
-      end
-    end
+ 

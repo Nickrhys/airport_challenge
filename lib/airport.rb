@@ -25,9 +25,10 @@ class Airport
 		@planes.count 
 	end
 
-	def plane_fly
+	def plane_fly(plane)
 		return "Weather conditions do not permit take off" if weather_stormy?
-		@planes.pop
+		@planes.delete(plane)
+
 	end
 
 	def full?

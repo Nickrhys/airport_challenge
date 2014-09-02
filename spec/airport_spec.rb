@@ -18,25 +18,29 @@ describe Airport do
     end
     
     it 'a plane can land' do
-     expect(airport.plane_count).to eq 0    
+     expect(airport.plane_count).to eq (0)    
      airport.plane_land(plane)
-     expect(airport.plane_count).to eq 1
+     expect(airport.plane_count).to eq (1)
     end
 
     it 'the plane is not flying after landing' do
     allow(plane).to receive(:land).and_return(flying = false)
     airport.plane_land(plane)
-    expect(plane).to_not be flying
+    expect(airport.plane_count).to eq (1)
     end
     
     it 'a plane can take off' do
-      airport.plane_fly
-      expect(airport.plane_count).to eq 0
+      airport.plane_fly(plane)
+      expect(airport.plane_count).to eq (0)
     end
 
     it 'the plane is flying after taking off' do
-      # ....
+    allow(plane).to receive(:take_off).and_return(flying = true)
+    airport.plane_land(plane)
+    airport.plane_fly(plane)
+    expect(airport.plane_count).to eq (0)
     end
+
   end
   
   context 'traffic control' do
@@ -55,7 +59,7 @@ describe Airport do
 
       it 'a plane cannot take off when there is a storm brewing' do
         airport.plane_land(plane)
-        expect(airport.plane_fly).to eq "Weather conditions do not permit take off"
+        expect(airport.plane_fly(plane)).to eq "Weather conditions do not permit take off"
 
       end
       

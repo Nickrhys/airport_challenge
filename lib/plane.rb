@@ -1,4 +1,6 @@
 class Plane
+	require_relative 'airport'
+	require_relative 'weather'
 
 	def initialize
 		in_air!

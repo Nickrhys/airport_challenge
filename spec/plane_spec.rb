@@ -26,6 +26,10 @@ describe Plane do
   	plane.land! 
   	expect(plane).to_not be_flying
   end
+
+  it 'can not land if it is landed already' do
+    # ...
+  end
   
   it 'changes its status to flying after taking off' do
  	plane.land!

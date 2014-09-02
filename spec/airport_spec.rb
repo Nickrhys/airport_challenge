@@ -8,45 +8,58 @@ require 'airport'
 describe Airport do
   let (:airport) 		{ Airport.new 					}
   let (:plane)			{ double :plane 				}
-  let (:plane_land)  	{ double :plane, flying?: false }
-  let (:plane_fly) 		{ double :plane, flying?: true  }
+
 
 
   context 'taking off and landing' do
+
+    before(:each) do
+      allow(airport).to receive(:weather_stormy?).and_return(false)
+    end
     
     it 'a plane can land' do
-     allow(airport).to receive(:weather).and_return(:sunny)
      expect(airport.plane_count).to eq 0    
      airport.plane_land(plane)
      expect(airport.plane_count).to eq 1
     end
+
+    it 'the plane is not flying after landing' do
+    allow(plane).to receive(:land).and_return(flying = false)
+    airport.plane_land(plane)
+    expect(plane).to_not be flying
+    end
     
     it 'a plane can take off' do
-      allow(airport).to receive(:weather).and_return(:sunny)
       airport.plane_fly
       expect(airport.plane_count).to eq 0
+    end
+
+    it 'the plane is flying after taking off' do
+      # ....
     end
   end
   
   context 'traffic control' do
 
     it 'a plane cannot land if the airport is full' do
-      allow(airport).to receive(:weather).and_return(:sunny)
+      allow(airport).to receive(:weather_stormy?).and_return(false)
       (airport.capacity).times {airport.plane_land(plane)}
   	  expect{ airport.plane_land(plane) }.to raise_error(RuntimeError)
     end
     
-       context 'weather conditions' do
+    context 'weather conditions' do
+
+      before(:each) do
+        allow(airport).to receive(:weather_stormy?).and_return(true)
+      end
+
       it 'a plane cannot take off when there is a storm brewing' do
-        allow(airport).to receive(:weather).and_return(:sunny)
         airport.plane_land(plane)
-        expect(airport).to receive(:weather).and_return(:stormy)
         expect(airport.plane_fly).to eq "Weather conditions do not permit take off"
 
       end
       
       it 'a plane cannot land in the middle of a storm' do
-        expect(airport).to receive(:weather).and_return(:stormy)
         expect(airport.plane_land(plane)).to eq "Cannot land due to severe weather conditions"  
       end
     end

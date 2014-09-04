@@ -23,5 +23,25 @@ it 'all planes can land and all planes can take off' do
 
   expect(luton.plane_count).to eq 0
   end
+
+  it 'has a flying status of false if landed' do
+   plane = Plane.new
+   airport = Airport.new
+      allow(plane).to receive(:take_off!).and_return(@flying = true)
+      allow(plane).to receive(:land!).and_return(@flying = false)
+      airport.plane_fly(plane)
+      airport.plane_land(plane)
+      expect(@flying).to eq false
+    end
+it 'has a flying status of true if flying' do
+   plane = Plane.new
+   airport = Airport.new
+      allow(plane).to receive(:land!).and_return(@flying = false)
+      allow(plane).to receive(:take_off!).and_return(@flying = true)
+      airport.plane_land(plane)
+      airport.plane_fly(plane)
+      expect(@flying). to eq true
+    end
+
 end
 

@@ -5,14 +5,15 @@ class Airport
 
 	include Weather
 
-	DEFAULT_CAPACITY = 10
+	DEFAULT_CAPACITY = 6
 
 	def initialize
-		@planes = []
+		@planes   = []
+		@capacity = DEFAULT_CAPACITY
 	end
 
 	def capacity
-		@capacity = DEFAULT_CAPACITY
+		@capacity 
 	end
 
 	def plane_land(plane)
@@ -37,4 +38,9 @@ class Airport
 		plane_count == @capacity
 	end
 
+	def release_all_landed_planes
+		until @planes.empty? do
+			@planes.each { |landed_plane| plane_fly(landed_plane) }
+		end		
+	end
 end

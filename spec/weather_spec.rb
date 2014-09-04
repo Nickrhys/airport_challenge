@@ -20,3 +20,7 @@
 
 #   end
 # end
+
+# Given I have an airport with the capacity of 5
+# When I land 4 planes in the airport
+# Then Landing the 5'th plane(which will make the airport to be full) will release all the planes inside the hangar

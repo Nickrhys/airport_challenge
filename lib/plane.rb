@@ -19,6 +19,7 @@ class Plane
 	end
 
 	def land!
+		raise "You are already landed!" if @flying == false
 		@flying = false
 	end
 

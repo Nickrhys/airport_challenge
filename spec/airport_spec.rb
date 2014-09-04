@@ -18,24 +18,43 @@ describe Airport do
     end
     
     it 'a plane can land' do
+     allow(plane).to receive(:land!).and_return(false)
      expect(airport.plane_count).to eq (0)    
      airport.plane_land(plane)
      expect(airport.plane_count).to eq (1)
     end
 
     it 'the plane is not flying after landing' do
-    allow(plane).to receive(:land).and_return(flying = false)
+    allow(plane).to receive(:land!).and_return(false)
     airport.plane_land(plane)
     expect(airport.plane_count).to eq (1)
     end
+
+    it 'has a flying status of false if landed' do
+      allow(plane).to receive(:take_off!).and_return(@flying = true)
+      allow(plane).to receive(:land!).and_return(@flying = false)
+      airport.plane_fly(plane)
+      airport.plane_land(plane)
+      expect(@flying).to eq false
+    end
     
     it 'a plane can take off' do
+      allow(plane).to receive(:take_off!).and_return(true)
       airport.plane_fly(plane)
       expect(airport.plane_count).to eq (0)
     end
 
+    it 'has a flying status of true if flying' do
+      allow(plane).to receive(:land!).and_return(@flying = false)
+      allow(plane).to receive(:take_off!).and_return(@flying = true)
+      airport.plane_land(plane)
+      airport.plane_fly(plane)
+      expect(@flying). to eq true
+    end
+
     it 'the plane is flying after taking off' do
-    allow(plane).to receive(:take_off).and_return(flying = true)
+    allow(plane).to receive(:land!).and_return(false)
+    allow(plane).to receive(:take_off!).and_return(true)
     airport.plane_land(plane)
     airport.plane_fly(plane)
     expect(airport.plane_count).to eq (0)
@@ -46,6 +65,7 @@ describe Airport do
   context 'traffic control' do
 
     it 'a plane cannot land if the airport is full' do
+      allow(plane).to receive(:land!).and_return(false)
       allow(airport).to receive(:weather_stormy?).and_return(false)
       (airport.capacity).times {airport.plane_land(plane)}
   	  expect{ airport.plane_land(plane) }.to raise_error(RuntimeError)

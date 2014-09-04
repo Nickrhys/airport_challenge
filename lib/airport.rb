@@ -18,6 +18,7 @@ class Airport
 	def plane_land(plane)
 		raise "Airport full" if full?
 		return "Cannot land due to severe weather conditions" if weather_stormy?
+		plane.land!
 		@planes << plane
 	end
 
@@ -27,6 +28,7 @@ class Airport
 
 	def plane_fly(plane)
 		return "Weather conditions do not permit take off" if weather_stormy?
+		plane.take_off! 
 		@planes.delete(plane)
 
 	end
